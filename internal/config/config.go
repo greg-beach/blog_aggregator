@@ -6,8 +6,9 @@ import (
 	"path/filepath"
 )
 
-const configFileName = "gatorconfig.json"
-const internalPath = "/bootdev_projects/golang/blog_aggregator"
+const configFileName = ".gatorconfig.json"
+
+// const internalPath = "/bootdev_projects/golang/blog_aggregator"
 
 type Config struct {
 	DBURL           string `json:"db_url"`
@@ -46,7 +47,7 @@ func getConfigFilePath() (string, error) {
 	if err != nil {
 		return "", err
 	}
-	fullPath := filepath.Join(home, internalPath, configFileName)
+	fullPath := filepath.Join(home, configFileName)
 	return fullPath, nil
 }
 

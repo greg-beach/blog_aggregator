@@ -6,7 +6,7 @@ import (
 	"os"
 
 	"github.com/greg-beach/blog_aggregator/internal/config"
-	"github.com/greg-beach/blog_aggregator/sql/database"
+	"github.com/greg-beach/blog_aggregator/internal/database"
 	_ "github.com/lib/pq"
 )
 
@@ -21,15 +21,15 @@ func main() {
 		log.Fatalf("error reading config: %v", err)
 	}
 
-	db, err := sql.Open("postgres", dbURL)
+	db, err := sql.Open("postgres", cfg.DBURL)
 	if err != nil {
-		log.Fatal("Error opening sql db")
+		log.Fatalf("Error connecting to db: %v", err)
 	}
-
+	defer db.Close()
 	dbQueries := database.New(db)
 
 	programState := &state{
-		db:  &dbQueries,
+		db:  dbQueries,
 		cfg: &cfg,
 	}
 
@@ -37,6 +37,7 @@ func main() {
 		registeredCommands: make(map[string]func(*state, command) error),
 	}
 	cmds.register("login", handlerLogin)
+	cmds.register("register", handlerRegister)
 
 	if len(os.Args) < 2 {
 		log.Fatal("Usage: cli <command> [args...]")
