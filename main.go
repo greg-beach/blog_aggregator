@@ -7,6 +7,7 @@ import (
 
 	"github.com/greg-beach/blog_aggregator/internal/config"
 	"github.com/greg-beach/blog_aggregator/internal/database"
+	"github.com/greg-beach/blog_aggregator/internal/rssapi"
 	_ "github.com/lib/pq"
 )
 
@@ -40,6 +41,7 @@ func main() {
 	cmds.register("register", handlerRegister)
 	cmds.register("reset", handlerReset)
 	cmds.register("users", handlerGetUsers)
+	cmd.register("agg", handlerAgg)
 
 	if len(os.Args) < 2 {
 		log.Fatal("Usage: cli <command> [args...]")
