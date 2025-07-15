@@ -10,7 +10,7 @@ import (
 
 func handlerBrowse(s *state, cmd command, user database.User) error {
 	limit := 2
-	if len(cmds.Args) == 1 {
+	if len(cmd.Args) == 1 {
 		if specifiedLimit, err := strconv.Atoi(cmd.Args[0]); err == nil {
 			limit = specifiedLimit
 		} else {
@@ -20,7 +20,7 @@ func handlerBrowse(s *state, cmd command, user database.User) error {
 
 	posts, err := s.db.GetPostsForUser(context.Background(), database.GetPostsForUserParams{
 		UserID: user.ID,
-		Limit: int32(limit),
+		Limit:  int32(limit),
 	})
 	if err != nil {
 		return fmt.Errorf("couldn't get posts for user: %w", err)
@@ -35,5 +35,5 @@ func handlerBrowse(s *state, cmd command, user database.User) error {
 		fmt.Println("=====================================")
 	}
 
-	return nil	
+	return nil
 }
